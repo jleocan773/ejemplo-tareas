@@ -5,13 +5,12 @@
 export const environment = {
   production: false,
   firebaseConfig : {
-    apiKey: "AIzaSyA03Bz0ppTI2pLQgciH2dGPB_1ksJTE20k",
-    authDomain: "ejemplo-tareas.firebaseapp.com",
-    projectId: "ejemplo-tareas",
-    storageBucket: "ejemplo-tareas.appspot.com",
-    messagingSenderId: "448264123821",
-    appId: "1:448264123821:web:43363cc058ffa767ab5d24",
-    measurementId: "G-3BT6S95168"
+    apiKey: "AIzaSyDeEBXgGeuHiHdbriVHTLbt4bEDBCdrEJA",
+    authDomain: "hlc-databases.firebaseapp.com",
+    projectId: "hlc-databases",
+    storageBucket: "hlc-databases.appspot.com",
+    messagingSenderId: "178111689171",
+    appId: "1:178111689171:web:ceca505c8f11316c22bf26"
   }
 };
 

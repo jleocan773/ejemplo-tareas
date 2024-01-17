@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {Tarea} from '../tarea'
 import { FirestoreService } from '../firestore.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -16,19 +17,11 @@ export class HomePage {
   }];
   idTareaSelec: string = "";
 
-  constructor(private firestoreService: FirestoreService) {
+  constructor(private firestoreService: FirestoreService, private router: Router) {
     this.obtenerListaTareas();
   }
 
-  clicBotonInsertar() {
-    //this.firestoreService.insertar("tareas", this.tareaEditando);
-    this.firestoreService.insertar("tareas", this.tareaEditando).then(() => {
-      console.log('Tarea creada correctamente!');
-      this.tareaEditando= {} as Tarea;
-    }, (error) => {
-      console.error(error);
-    });
-  }
+
 
   obtenerListaTareas() {
     // Hacer una consulta cada vez que se detectan nuevos datos en la BD
@@ -49,6 +42,16 @@ export class HomePage {
   selecTarea(idTarea:string, tareaSelec:Tarea) {
     this.tareaEditando = tareaSelec;
     this.idTareaSelec = idTarea;
+    this.router.navigate(['detalle', this.idTareaSelec])
+  }
+
+  clicBotonInsertar() {
+    this.firestoreService.insertar("tareas", this.tareaEditando).then(() => {
+      console.log('Tarea creada correctamente!');
+      this.tareaEditando= {} as Tarea;
+    }, (error) => {
+      console.error(error);
+    });
   }
 
   clicBotonBorrar() {
@@ -70,3 +73,4 @@ export class HomePage {
   }
 
 }
+
