@@ -1,13 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>detalle</ion-title>
+    <ion-title>Detalles</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">detalle</ion-title>
+      <ion-title size="large">Detalles</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -30,10 +30,11 @@
     <ion-input [(ngModel)]="document.data.descripcion" name="descripcion" type="text"></ion-input>
   </ion-item>
 
-  <ion-button (click)="clicBotonBorrar()">Borrar tarea</ion-button>
-  <ion-button (click)="clicBotonModificar()">Modificar tarea</ion-button>
+  <ion-button *ngIf="!isNuevo" (click)="clicBotonBorrar()">Borrar tarea</ion-button>
+  <ion-button *ngIf="!isNuevo" (click)="clicBotonModificar()">Modificar tarea</ion-button>
+  <ion-button *ngIf="isNuevo" (click)="clicBotonInsertar()">Añadir tarea</ion-button>
   <ion-button [routerLink]="['/home']">Volver</ion-button>
-
+  
 
 
 

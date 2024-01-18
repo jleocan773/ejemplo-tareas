@@ -12,14 +12,13 @@
       <ion-title size="large">Ejemplo Tareas</ion-title>
     </ion-toolbar>
   </ion-header>
+  <br>
 
   <ion-label>Título</ion-label>
   <ion-input [(ngModel)]="tareaEditando.titulo"></ion-input>
 
   <ion-label>Descripción</ion-label>
   <ion-input [(ngModel)]="tareaEditando.descripcion"></ion-input>
-
-  <ion-button (click)="clicBotonInsertar()">Añadir tarea</ion-button>
 
   <h1>LISTA DE TAREAS</h1>
   <ion-list>
@@ -34,5 +33,10 @@
       </ion-grid>
     </ion-item>
   </ion-list>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button [routerLink]="['/detalle/nuevo']">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 </ion-content>
