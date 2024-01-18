@@ -12,7 +12,7 @@
   </ion-header>
 
 
-  <ion-item>
+  <ion-item *ngIf="!isNuevo">
     <ion-label position="floating">ID</ion-label>
     <br>
     <p>{{id}}</p>
