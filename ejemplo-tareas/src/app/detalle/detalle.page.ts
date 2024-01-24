@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { FirestoreService } from '../firestore.service';
 import { Tarea } from '../tarea';
 import { NavController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-detalle',
@@ -22,7 +24,8 @@ export class DetallePage implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private firestoreService: FirestoreService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+   private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -38,17 +41,19 @@ export class DetallePage implements OnInit {
         this.isNuevo = true;
       } else {
         //Si la id no es "nuevo", realizar una consulta a Firestore para obtener los detalles del documento seleccionado
-        this.firestoreService.consultarPorId('tareas', this.id).subscribe((resultado: any) => {
-          if (resultado.payload.data() != null) {
-            //Si se encuentra el documento, asignar la información a la propiedad 'document'
-            this.document.id = resultado.payload.id;
-            this.document.data = resultado.payload.data();
-            console.log(this.document.data.titulo);
-          } else {
-            //Si no se encuentra el documento, inicializar "document" con una tarea vacía
-            this.document.data = {} as Tarea;
-          }
-        });
+        this.firestoreService
+          .consultarPorId('tareas', this.id)
+          .subscribe((resultado: any) => {
+            if (resultado.payload.data() != null) {
+              //Si se encuentra el documento, asignar la información a la propiedad 'document'
+              this.document.id = resultado.payload.id;
+              this.document.data = resultado.payload.data();
+              console.log(this.document.data.titulo);
+            } else {
+              //Si no se encuentra el documento, inicializar "document" con una tarea vacía
+              this.document.data = {} as Tarea;
+            }
+          });
       }
     } else {
       //Si no se ha pasado un 'id' en la URL, estamos en el modo "nuevo"
@@ -59,7 +64,7 @@ export class DetallePage implements OnInit {
   clicBotonInsertar() {
     this.firestoreService.insertar('tareas', this.document.data).then(
       () => {
-        console.log('Tarea insertada correctamente desde detalle.page.ts!');
+        console.log('Tarea insertada correctamente');
         this.navCtrl.navigateBack('/home');
       },
       (error) => {
@@ -69,26 +74,51 @@ export class DetallePage implements OnInit {
   }
 
   clicBotonModificar() {
-    this.firestoreService.modificar('tareas', this.document.id, this.document.data).then(
-      () => {
-        console.log('Tarea editada correctamente desde detalle.page.ts!');
-        this.navCtrl.navigateBack('/home');
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+    this.firestoreService
+      .modificar('tareas', this.document.id, this.document.data)
+      .then(
+        () => {
+          console.log('Tarea editada correctamente');
+          this.navCtrl.navigateBack('/home');
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
   }
 
-  clicBotonBorrar() {
-    this.firestoreService.borrar('tareas', this.document.id).then(
-      () => {
-        console.log('Tarea borrada correctamente desde detalle.page.ts!');
-        this.navCtrl.navigateBack('/home');
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+  async clicBotonBorrar() {
+    const alert = await this.alertController.create({
+      header: 'Confirmar borrado de tarea',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Borrado cancelado');
+          },
+        },
+        {
+          text: 'Confirmar',
+          role: 'confirm',
+          handler: () => {
+            //Si se presiona confirmar, manejar el borrado
+            this.firestoreService.borrar('tareas', this.document.id).then(
+              () => {
+                console.log(
+                  'Tarea borrada correctamente'
+                );
+                this.navCtrl.navigateBack('/home');
+              },
+              (error) => {
+                console.error(error);
+              }
+            );
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }

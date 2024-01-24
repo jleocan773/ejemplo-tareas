@@ -11,13 +11,6 @@
     </ion-toolbar>
   </ion-header>
 
-
-  <ion-item *ngIf="!isNuevo">
-    <ion-label position="floating">ID</ion-label>
-    <br>
-    <p>{{id}}</p>
-  </ion-item>
-
   <ion-item>
     <ion-label position="floating">Título</ion-label>
     <br>
@@ -30,7 +23,7 @@
     <ion-input [(ngModel)]="document.data.descripcion" name="descripcion" type="text"></ion-input>
   </ion-item>
 
-  <ion-button *ngIf="!isNuevo" (click)="clicBotonBorrar()">Borrar tarea</ion-button>
+  <ion-button id="boton__borrado" *ngIf="!isNuevo" (click)="clicBotonBorrar()">Borrar tarea</ion-button>
   <ion-button *ngIf="!isNuevo" (click)="clicBotonModificar()">Modificar tarea</ion-button>
   <ion-button *ngIf="isNuevo" (click)="clicBotonInsertar()">Añadir tarea</ion-button>
   <ion-button [routerLink]="['/home']">Volver</ion-button>

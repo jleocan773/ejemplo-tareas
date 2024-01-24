@@ -12,14 +12,6 @@
       <ion-title size="large">Tareas Chupistásticas</ion-title>
     </ion-toolbar>
   </ion-header>
-  <br>
-
-  <ion-label>Título</ion-label>
-  <ion-input [(ngModel)]="tareaEditando.titulo"></ion-input>
-
-  <ion-label>Descripción</ion-label>
-  <ion-input [(ngModel)]="tareaEditando.descripcion"></ion-input>
-
   <h1>LISTA DE TAREAS</h1>
   <ion-list>
     <ion-item *ngFor="let documentTarea of arrayColeccionTareas" (click)="selecTarea(documentTarea.id, documentTarea.tarea)">
