@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 // npm install firebase @angular/fire --save
 
 @Injectable({
@@ -7,7 +8,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class FirestoreService {
 
-  constructor(private angularFirestore: AngularFirestore) { }
+  constructor(private angularFirestore: AngularFirestore, private angularFireStorage: AngularFireStorage) { }
 
   public insertar(coleccion:string, datos:any) {
     return this.angularFirestore.collection(coleccion).add(datos);
@@ -28,5 +29,15 @@ export class FirestoreService {
   public consultarPorId(coleccion:string, documentId:string){
     return this.angularFirestore.collection(coleccion).doc(documentId).snapshotChanges();
   }
+
+  public subirImagenBase64(nombreCarpeta:string, nombreArchivo:string, imagenBase64:string){
+    let storageRed = this.angularFireStorage.ref(nombreCarpeta).child(nombreArchivo);
+    return storageRed.putString(imagenBase64, 'data_url');
+  }
+
+  public eliminarArchivoPorURL(url:string){
+    return this.angularFireStorage.storage.refFromURL(url).delete();
+  }
+
 
 }
