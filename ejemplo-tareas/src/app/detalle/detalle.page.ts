@@ -137,11 +137,11 @@ export class DetallePage implements OnInit {
         if (result == false) {
           this.imagePicker.requestReadPermission();
         } else {
-          //Abrir selector de imágenes (ImagePicker)
+          // Abrir selector de imágenes (ImagePicker)
           this.imagePicker
             .getPictures({
-              maximumImagesCount: 1, //Permitir solo 1 imagen
-              outputType: 1, //Imagen en formato base64
+              maximumImagesCount: 1, // Permitir solo 1 imagen
+              outputType: 1, // Imagen en formato base64
             })
             .then(
               (results) => {
@@ -186,7 +186,7 @@ export class DetallePage implements OnInit {
     loading.present();
 
     //Asignar el nombre de la imagen en función de la hora actual, para evitar duplicados
-    let nombreImagen = '${new Date().getTime()}';
+    let nombreImagen = `${new Date().getTime()}`;
     //Llamar al método que sube la imagen al Storage
     this.firestoreService
       .subirImagenBase64(nombreCarpeta, nombreImagen, this.imagenSelec)
@@ -194,7 +194,7 @@ export class DetallePage implements OnInit {
         snapshot.ref.getDownloadURL().then((downloadURL) => {
           //Asignar la URL de descarga de la imagen
           console.log('downloadURL: ' + downloadURL);
-          //this.document.data.imagenURL = downloadURL;
+          this.document.data.downloadURL = downloadURL;
           //MOstrar el mensaje de finalización de la subida
           toast.present();
           //Ocultar mensaje de espera
@@ -203,13 +203,24 @@ export class DetallePage implements OnInit {
       });
   }
 
-  async eliminarArchivo(fileURL: string) {
+  async eliminarImagen(fileURL: string) {
     const toast = await this.toastController.create({
       message: 'El archivo se ha borrado correctamente',
       duration: 3000,
     });
+
+    //Eliminar la imagen en Firebase Storage
     this.firestoreService.eliminarArchivoPorURL(fileURL).then(
-      () => {
+      async () => {
+        //Eliminar la downloadURL del documento en Firestore
+        this.document.data.downloadURL = null; // Puedes establecerlo en null o eliminar la propiedad, según tus necesidades
+        await this.firestoreService.modificar(
+          'tareas',
+          this.document.id,
+          this.document.data
+        );
+
+        //Mostrar el mensaje de éxito
         toast.present();
       },
       (err) => {

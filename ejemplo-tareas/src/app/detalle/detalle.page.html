@@ -27,11 +27,11 @@
   <ion-button *ngIf="!isNuevo" (click)="clicBotonModificar()">Modificar tarea</ion-button>
   <ion-button *ngIf="isNuevo" (click)="clicBotonInsertar()">Añadir tarea</ion-button>
   <ion-button [routerLink]="['/home']">Volver</ion-button>
-  <ion-button  (click)="seleccionarImagen()">Subir Imagen</ion-button>
-  <ion-button  (click)="clicBotonInsertar()">Añadir tarea</ion-button>
-  
+  <ion-button (click)="seleccionarImagen()">Seleccionar Imagen</ion-button>
+  <ion-button (click)="subirImagen()">Subir Imagen</ion-button>
+  <ion-button (click)="eliminarImagen(document.data.downloadURL)">Eliminar Imagen</ion-button>
 
 
-
+  <img *ngIf="document.data.downloadURL" [src]="document.data.downloadURL" alt="Imagen seleccionada">
 
 </ion-content>
